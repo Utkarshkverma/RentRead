@@ -28,9 +28,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+
+    private String role;
 
     @OneToMany(mappedBy = "users")
     private List<Rental> rentals = new ArrayList<>();

@@ -25,7 +25,7 @@ public class Books {
     @Column(nullable = false)
     private String genre;
     @Column(nullable = false)
-    private boolean isAvailable;
+    private boolean isAvailable = true;
     @OneToMany(mappedBy = "books")
     private List<Rental> rentals = new ArrayList<>();
 
