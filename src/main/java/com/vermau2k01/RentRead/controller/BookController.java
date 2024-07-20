@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +26,14 @@ public class BookController {
         return new ResponseEntity<>(allBooks, HttpStatus.FOUND);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Books> getBookById(@PathVariable UUID id) {
         return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.FOUND);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Books> addBook(@Valid @RequestBody BookDto bookDto) {
 
@@ -37,6 +41,7 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable UUID id) {
         bookService.deleteBook(id);
