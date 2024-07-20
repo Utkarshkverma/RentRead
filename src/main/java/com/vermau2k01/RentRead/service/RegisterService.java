@@ -23,7 +23,7 @@ public class RegisterService implements  IRegisterService{
         user.setName(userDto.getName());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
-        user.setRole(userDto.getRole());
+        user.setRole(userDto.getRole()==null?"USER":userDto.getRole());
         return userRepository.save(user);
     }
 }
