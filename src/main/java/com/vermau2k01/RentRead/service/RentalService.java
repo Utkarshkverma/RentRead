@@ -2,10 +2,12 @@ package com.vermau2k01.RentRead.service;
 
 import com.vermau2k01.RentRead.entity.Books;
 import com.vermau2k01.RentRead.entity.Rental;
+import com.vermau2k01.RentRead.entity.TransactionHistory;
 import com.vermau2k01.RentRead.entity.User;
 import com.vermau2k01.RentRead.exception.*;
 import com.vermau2k01.RentRead.repository.BookRepository;
 import com.vermau2k01.RentRead.repository.RentalRepository;
+import com.vermau2k01.RentRead.repository.TransactionRepository;
 import com.vermau2k01.RentRead.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ public class RentalService implements IRentalService {
     private BookRepository bookRepository;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(RentalService.class);
 
@@ -81,13 +85,18 @@ public class RentalService implements IRentalService {
 
             Rental rental = rentalRepository.findByBooks(books)
                     .orElseThrow(RentalNotExistsException::new);
-
+            TransactionHistory transactions = new TransactionHistory();
+            transactions.setBorrowerEmail(email);
+            transactions.setRentedBookName(books.getTitle());
+            transactions.setBorrowedDate(rental.getBorrowDate());
             user.getRentals().remove(rental);
             books.getRentals().remove(rental);
             books.setAvailable(true);
             rental.setReturnDate(LocalDate.now());
+            transactions.setReturnedDate(rental.getReturnDate());
             userRepository.save(user);
             bookRepository.save(books);
+            transactionRepository.save(transactions);
             rentalRepository.delete(rental);
             return rental;
 
