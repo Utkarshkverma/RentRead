@@ -2,10 +2,13 @@ package com.vermau2k01.RentRead.controller;
 
 import com.vermau2k01.RentRead.entity.User;
 import com.vermau2k01.RentRead.service.IUserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +44,14 @@ public class UserController {
     {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<String> getMe()
+    {
+        String userDetails = userService.getUserDetails();
+        return new ResponseEntity<>(userDetails, HttpStatus.OK);
+
     }
 
 }

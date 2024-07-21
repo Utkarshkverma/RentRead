@@ -1,5 +1,7 @@
 package com.vermau2k01.RentRead.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -33,8 +35,20 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Rental> rentals = new ArrayList<>();
+
+    @Transient
+    public List<UUID> getBooks() {
+        List<UUID> books_rented = new ArrayList<>();
+        for (Rental rental : rentals) {
+            if (rental.getBooks() != null) {
+                books_rented.add(rental.getBooks().getId());
+            }
+        }
+        return books_rented;
+    }
 
 
 }

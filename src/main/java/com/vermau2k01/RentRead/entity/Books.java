@@ -1,5 +1,7 @@
 package com.vermau2k01.RentRead.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +28,8 @@ public class Books {
     private String genre;
     @Column(nullable = false)
     private boolean isAvailable = true;
-    @OneToMany(mappedBy = "books")
+    @OneToMany(mappedBy = "books",fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Rental> rentals = new ArrayList<>();
 
 }

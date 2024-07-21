@@ -1,6 +1,8 @@
 package com.vermau2k01.RentRead;
 
 import com.vermau2k01.RentRead.dtos.ErrorResponse;
+import com.vermau2k01.RentRead.exception.BookLimitExceedException;
+import com.vermau2k01.RentRead.exception.BookNotAvailableException;
 import com.vermau2k01.RentRead.exception.BookNotFoundException;
 import com.vermau2k01.RentRead.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -48,5 +50,33 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BookNotAvailableException.class)
+    public ResponseEntity<ErrorResponse> handleBookNotAvailableException
+            (BookNotAvailableException ex) {
+        ErrorResponse err = ErrorResponse
+                .builder()
+                .message(ex.getMessage())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .success(false)
+                .build();
+
+        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BookLimitExceedException.class)
+    public ResponseEntity<ErrorResponse> handleBookLimitExceedException
+            (BookLimitExceedException ex) {
+        ErrorResponse err = ErrorResponse
+                .builder()
+                .message(ex.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .success(false)
+                .build();
+
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }
