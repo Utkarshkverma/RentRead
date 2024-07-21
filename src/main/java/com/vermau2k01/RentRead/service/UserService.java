@@ -3,6 +3,7 @@ package com.vermau2k01.RentRead.service;
 
 import com.vermau2k01.RentRead.dtos.UserDto;
 import com.vermau2k01.RentRead.entity.User;
+import com.vermau2k01.RentRead.exception.UserNotExistsException;
 import com.vermau2k01.RentRead.exception.UserNotFoundException;
 import com.vermau2k01.RentRead.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +52,16 @@ public class UserService implements IUserService {
                 .getAuthentication();
         return authentication.getName();
     }
+
+    @Override
+    public User getMyDetails() {
+
+        String email = getUserDetails();
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new UserNotExistsException(getUserDetails()));
+
+    }
+
+
 }

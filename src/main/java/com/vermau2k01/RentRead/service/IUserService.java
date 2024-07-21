@@ -12,4 +12,5 @@ public interface IUserService {
     User getUser(UUID id);
     void deleteUser(UUID id);
     String getUserDetails();
+    User getMyDetails();
 }

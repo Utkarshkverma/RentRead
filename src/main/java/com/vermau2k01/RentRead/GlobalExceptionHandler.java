@@ -1,10 +1,7 @@
 package com.vermau2k01.RentRead;
 
 import com.vermau2k01.RentRead.dtos.ErrorResponse;
-import com.vermau2k01.RentRead.exception.BookLimitExceedException;
-import com.vermau2k01.RentRead.exception.BookNotAvailableException;
-import com.vermau2k01.RentRead.exception.BookNotFoundException;
-import com.vermau2k01.RentRead.exception.UserNotFoundException;
+import com.vermau2k01.RentRead.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -67,6 +64,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BookLimitExceedException.class)
     public ResponseEntity<ErrorResponse> handleBookLimitExceedException
             (BookLimitExceedException ex) {
+        ErrorResponse err = ErrorResponse
+                .builder()
+                .message(ex.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .success(false)
+                .build();
+
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotExistsException(UserNotExistsException ex) {
+        ErrorResponse err = ErrorResponse
+                .builder()
+                .message(ex.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .success(false)
+                .build();
+
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RentalNotExistsException.class)
+    public ResponseEntity<ErrorResponse>
+    handleRentalNotExistsException(RentalNotExistsException ex) {
         ErrorResponse err = ErrorResponse
                 .builder()
                 .message(ex.getMessage())

@@ -54,4 +54,13 @@ public class UserController {
 
     }
 
+    @GetMapping("/my-profile")
+    public ResponseEntity<User> getMyProfile()
+    {
+        User myDetails = userService.getMyDetails();
+        return new ResponseEntity<>(myDetails, HttpStatus.FOUND);
+    }
+
+
+
 }

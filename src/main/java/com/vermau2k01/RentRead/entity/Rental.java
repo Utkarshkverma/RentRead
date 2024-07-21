@@ -29,9 +29,16 @@ public class Rental {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Books books;
     private LocalDate borrowDate;
     private LocalDate returnDate;
+
+    @Transient
+    private String borrowedBy;
+    public String getBorrowedBy() {
+       return users.getName();
+    }
+
 
 }

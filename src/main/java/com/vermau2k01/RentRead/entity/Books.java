@@ -29,7 +29,7 @@ public class Books {
     @Column(nullable = false)
     private boolean isAvailable = true;
     @OneToMany(mappedBy = "books",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Rental> rentals = new ArrayList<>();
 
 }
